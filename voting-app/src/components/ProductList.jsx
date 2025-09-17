@@ -22,9 +22,6 @@ export default function ProductList() {
         />
     ) )
 
-    
-
-
   return (
     <section className="ui unstackable items">
        {productComponents}
