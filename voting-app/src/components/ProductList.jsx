@@ -1,65 +1,57 @@
 import Product from "./Product";
-import {products} from '../seeds';
+import { products } from "../seeds";
 import { useState } from "react";
 
-
 export default function ProductList() {
-
-
   //Hooks
   const [prods, setProds] = useState(products);
+  const [descendent, setDescendent] = useState(true);
 
-  const handleProductUpVote = (id ) => {
 
-    const updatedproducts = prods.map( p => {
-      if(p.id === id ) {
-        return {... p , votes: p.votes + 1};
+  const handleProductVote = (id, vote) => {
+    const updatedproducts = prods.map((p) => {
+      if (p.id === id) {
+        return { ...p, votes: p.votes + vote };
       } else {
         return p;
       }
-    })
+    });
 
     setProds(updatedproducts);
+  };
 
-
-   // console.log(`Foi votado o produto com id: ${id}`);
-
-   /*  products.map( p => {
-      if(p.id === id ){
-        p.votes = p.votes + 1;
-        debugger;
-      }
-    }) */
-
-
+  const handleSort = () => {
+    setDescendent( !descendent );
+    
   }
 
-    //console.log(products);
-    //const product = products[2];
-    //console.log(product);
+  //const sortedproducts = prods.sort((a, b) => a.votes - b.votes);
+  const sortedproducts = prods.sort(
+    (a, b) => descendent ?  (b.votes - a.votes) : (a.votes - b.votes)
+  );
 
-    const sortedproducts = prods.sort( (a, b) => (b.votes - a.votes) )
-
-    const productComponents = sortedproducts.map( p => (
-        <Product 
-            key = {p.id}
-            /* {...p} */
-            id = {p.id}
-            title = {p.title}
-            description = {p.description}
-            url = {p.url}
-            votes = {p.votes}
-            productImageUrl = {p.productImageUrl}
-            submitterAvatarUrl = {p.submitterAvatarUrl}
-
-            handleVote = {handleProductUpVote}
-        />
-    ) )
+  const productComponents = sortedproducts.map((p) => (
+    <Product
+      key={p.id}
+      /* {...p} */
+      id={p.id}
+      title={p.title}
+      description={p.description}
+      url={p.url}
+      votes={p.votes}
+      productImageUrl={p.productImageUrl}
+      submitterAvatarUrl={p.submitterAvatarUrl}
+      handleVote={handleProductVote}
+    />
+  ));
 
   return (
     <section className="ui unstackable items">
-      <p> <button> Up / down </button></p>
-       {productComponents}
+      
+        <button onClick={handleSort}> Up / down </button>
+     
+      {productComponents}
     </section>
   );
 }
+

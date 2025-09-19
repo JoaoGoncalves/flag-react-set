@@ -1,9 +1,22 @@
 export default function Product(props) {
+
     let { id, title, description, url, votes, productImageUrl, submitterAvatarUrl, handleVote} = props;
 
-    const handleUpVote = () => {
-      handleVote(id)
+    const handleProductVote = (evt) => {
+      
+      //console.log(evt.target.className);
+
+     /*  if(evt.target.className.search('up') > -1 ){
+        handleVote(id, 1)
+      } else {
+        handleVote(id, -1)
+      } */
+
+        evt.target.className.search('up') > -1 ? handleVote(id, 1) : handleVote(id, -1)
+
+      //handleVote(id)
     }
+   
   
     return (
     <section className="item">
@@ -14,9 +27,9 @@ export default function Product(props) {
       <article className="middle aligned content">
 
         <div className="header">
-          <a onClick={handleUpVote}><i className="large caret up icon"></i></a>
+          <a onClick={handleProductVote}><i className="large caret up icon"></i></a>
           {votes}
-          <a onClick={handleUpVote}><i className="large caret down icon"></i></a>
+          <a onClick={handleProductVote}><i className="large caret down icon"></i></a>
         </div>
 
         <header className="description">
