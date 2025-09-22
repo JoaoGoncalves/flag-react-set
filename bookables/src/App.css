@@ -12,6 +12,11 @@
   padding: 0;
   list-style: none;
 }
+
+.bookables  > li {
+ cursor: pointer;
+}
+
 .bookables > li {
   margin: 0 0 1em;
   padding: 1em;
