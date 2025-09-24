@@ -1,66 +1,112 @@
-
-import { useState } from 'react';
-import {bookables} from '../db.json';
+import { useState } from "react";
+import { bookables } from "../db.json";
 
 export default function Bookables() {
-  //console.log(bookables);
+  const [bookableIndex, setbookableIndex] = useState(0);
+  const [group, setGroup] = useState("Rooms");
+  const [hasDetails, setHasDetails] = useState(true);
 
-  const [bookableIndex, setbookableIndex] = useState(0)
-  // hoook useState(), metodo que retorna uma array com 2 elementos, o 1º a variavell do state, o 2º o metodo para atualizar essa variavel.
-  // cada vez que a variavel é atualizada oa view é feito o rerender da mesma, 
-  // parametro do useState, é o valor inicial da variavel
+  //const group = "Rooms";
+  const bookablesInGroup = bookables.filter((b) => b.group === group);
 
-  const group = "Kit";
+  const nextBookable = () => {
+    //setbookableIndex( (bookableIndex + 1) % bookablesInGroup.length)
 
-  const bookablesInGroup = bookables.filter( b => b.group === group );
+    setbookableIndex((index) => (index + 1) % bookablesInGroup.length);
+    // usar o setter para atualizar o state, devera ficar numa funcao para delegar a execução dessa atualização ao react
+  };
 
-  //let bookableIndex = 0;
+  //const groups = bookables.map( b => b.group);
+  const groups = [...new Set(bookables.map((b) => b.group))];
 
-  /* const changeBookable = (selectedIndex) => {
-    bookableIndex = selectedIndex;
+  const bookable = bookablesInGroup[bookableIndex];
 
-    console.log(bookableIndex);
-  } */
-
-  /* const bookableInGroupList = bookablesInGroup.map(
-    (b) => <li>{b.title}</li>
-  );
-
-  return (
-    <ul className="bookables">
-      {bookableInGroupList}
-    </ul>
-  ); */
+  const changeGroup = (e) => {
+    setGroup(e.target.value);
+    setbookableIndex(0);
+  }
 
   return (
-    <section>
-      <h1>titulo</h1>
-      <header>
-        <h2>Total de items : {bookablesInGroup.length}</h2>
-        <h1> Item selecionado : {bookablesInGroup[bookableIndex].title}</h1>
-      </header>
-      <ul className='bookables'>
+    <>
+      <section>
+        {/* <select value={group} onChange={ e => setGroup(e.target.value) }> */}
+        <select
+          value={group}
+          onChange={changeGroup}
+        >
+          {groups.map((g) => (
+            <option value={g} key={g}>
+              {g}
+            </option>
+          ))}
+        </select>
+        <ul className="bookables">
+          {bookablesInGroup.map((b, i) => (
+            <li
+              key={b.id}
+              className={bookableIndex === i ? "selected" : null}
+              onClick={() => setbookableIndex(i)}
+            >
+              {b.title}
+            </li>
+          ))}
+        </ul>
+        <p>
+          <button onClick={nextBookable}>next</button>
+        </p>
+      </section>
+
+      <section>
+        <p>
+          <label htmlFor="details">Show Details:</label>
+          <input 
+            type="checkbox" 
+            id="details" 
+            checked={hasDetails} 
+            onChange={ e => setHasDetails(e.target.checked)} 
+          />
+        </p>
+          {/* Conditional rendering */}
           { 
-            bookablesInGroup.map( (b, i) => (
-              <li key={b.id} className={bookableIndex === i ? 'selected' : null } onClick={ () => setbookableIndex(i) }>
-                {b.title}
-              </li>
-            ))
-          }
-          {/* { 
-            bookablesInGroup.map( 
-              function (b) {
-                return (
-                  <li>{b.title}</li>
-                )
-              }
+            hasDetails && (
+               <article>
+                <h2>{bookable.title}</h2>
+                <h3>{bookable.notes}</h3>
+              </article>
             )
-          } */}
-      </ul>
-    </section>
+          }
+
+      </section>
+    </>
   );
 }
 
+/* let arr = [1,2,3];
+let arr2 = arr;  /// copy by reference
+let arr3 = [...arr]; // copy by value (clone)
 
 
+console.log('arr:', arr);
+console.log('arr2:', arr2);
+console.log('arr3:', arr3);
 
+arr.push(4);
+console.log('arr:', arr);
+console.log('arr2:', arr2);
+console.log('arr3:', arr3);
+
+arr2.push(5);
+console.log('arr:', arr);
+console.log('arr2:', arr2);
+console.log('arr3:', arr3); */
+
+/* let arr = [1,2,3,4];
+let outraArrr = ['ola', 23, 100];
+
+let novaArr = [...arr, ...outraArrr];
+
+console.log(novaArr); */
+
+/* const obj = { nome: "joao" , apelido: 'Goncalves'};
+
+const cloneObj = {...obj}; //ES9 */
