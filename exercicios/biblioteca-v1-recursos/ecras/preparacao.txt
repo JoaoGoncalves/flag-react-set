@@ -1,0 +1,9 @@
+
+
+1 - "partir" a aplicação em componentes.
+2 - criar um cada componente com dados estaticos com o html e as css
+3 - tornar as minhas views "data-driven", e definir a componente que vai
+ gerir o state (BookDashboard)
+4 - definir todas as interacções das componentes (delete) 
+5 - atualizar o state de acoirdo com acada interacçãao
+6 - fazere a ligacao ao endoint da API, da base dados. 
